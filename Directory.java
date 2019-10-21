@@ -2,11 +2,13 @@ import java.util.*;
 
 public class Directory {
 
+    Contact value = new Contact();
+
     HashMap<String, String> mName_UUID = new HashMap<>();/// keep this as string
     HashMap<String, String> mEmail_UUID = new HashMap<>(); ///  keep this as string
     HashMap<String, String> mUUID_Data = new HashMap<>();
 
-    UUID uuid = UUID.randomUUID();
+//    UUID uuid = UUID.randomUUID();
 
 //    public void addInEmailDB(String email, String id){
 //
@@ -34,7 +36,7 @@ public class Directory {
 //            return null;
 //       return this.mUUID_Data.get(id);
 //    }
-    Contact value = new Contact();
+
 
     String mTemp;
     String mTemp1[];
@@ -50,7 +52,7 @@ public class Directory {
                 value.setmName(mTemp);
                 break;
             }
-            System.out.println("Enter alternate name");
+            System.out.println("Name altready Exists.. Please enter an alternate name");
         }
 
         System.out.println("Enter the Phone Number");
@@ -76,20 +78,18 @@ public class Directory {
                 System.out.println("Invalid Email format..");
             else if (!mEmail_UUID.containsKey(value.getmEmail()))
                 break;
-            System.out.println("Enter the new Email address");
+            System.out.println("Email already exists.. Please enter the new Email address");
         }
 
-        String uuid = UUID.randomUUID().toString();
+        value.setUuid(UUID.randomUUID().toString());
 
         mTemp = value.getmName() + "&/&" + value.getmPhonenumber() + "&/&" + value.getmEmail();
 
-        mName_UUID.put(value.getmName(), uuid);
+        mName_UUID.put(value.getmName(), value.getUuid());
 
-        mEmail_UUID.put(value.getmEmail(), uuid);
+        mEmail_UUID.put(value.getmEmail(), value.getUuid());
 
-        mUUID_Data.put(uuid, mTemp);
-
-        System.out.println(mUUID_Data);
+        mUUID_Data.put(value.getUuid(), mTemp);
     }
 
     public void search() {
@@ -176,9 +176,12 @@ public class Directory {
                 Scanner scan1 = new Scanner(System.in);
                 System.out.println("Enter the name to fetch the record..");
                 mTemp = scan1.nextLine();
+                mTemp = mTemp.substring(0,1).toUpperCase()+mTemp.substring(1);
                 if (mName_UUID.containsKey(mTemp)){
                     editBy(1,mName_UUID.get(mTemp));
+                    break;
                 }
+                break;
             }
             case 2: {
                 Scanner scan1 = new Scanner(System.in);
@@ -186,7 +189,9 @@ public class Directory {
                 mTemp = scan1.nextLine();
                 if (mEmail_UUID.containsKey(mTemp)) {
                     editBy(2,mEmail_UUID.get(mTemp));
+                    break;
                 }
+                break;
             }
         }
     }
@@ -226,15 +231,17 @@ public class Directory {
     }
 
     public String validateName(String mTemp) {
-        while (true) {
+        while(true) {
             Scanner scan1 = new Scanner(System.in);
-            if (mTemp == null || mTemp == " ") {
+            mTemp = mTemp.substring(0,1).toUpperCase()+mTemp.substring(1);
+            if (mTemp == null || mTemp.isEmpty()) {
                 System.out.println("No Entries found");
             } else if (mName_UUID.containsKey(mTemp)) {
                 System.out.println("Name already Exists..");
             } else
                 return mTemp;
             System.out.println("Enter a new name");
+            mTemp = scan1.nextLine();
         }
     }
 
@@ -242,18 +249,18 @@ public class Directory {
         Scanner scan = new Scanner(System.in);
         invalid:
         while (true) {
-            mTemp = scan.nextLine().trim();
             for (int i = 0; i < mTemp.length(); i++) {
                 if (!('0' <= mTemp.charAt(i) && mTemp.charAt(i) <= '9') || mTemp.charAt(i) == '+') {
                     System.out.println("Enter a Valid Phone Number");
+                    mTemp = scan.nextLine().trim();
                     continue invalid;
                 }
-                if (i == mTemp.length())
+                if (i == mTemp.length()-1)
                     return mTemp;
             }
             break;
         }
-        return null;
+        return mTemp;
     }
 
     public void editName(String mTemp) {
@@ -271,7 +278,7 @@ public class Directory {
 
     public void editBy(int editBy,String uuid) {
         Scanner scan = new Scanner(System.in);
-        System.out.println("Editing by email");
+        System.out.println("Edit:");
         System.out.println("1.Edit Name");
         System.out.println("2.Edit Phone number");
         System.out.println("3.Edit Email");
@@ -282,20 +289,24 @@ public class Directory {
             case "1": {
                 System.out.println("Enter a new name:");
                 mTemp = scan.nextLine();
+                mTemp = mTemp.substring(0,1).toUpperCase()+mTemp.substring(1);
                 newValue = validateName(mTemp);
                 editbyComponent(editBy, 1, newValue, uuid);
+                break;
             }
             case "2": {
                 System.out.println("Enter a new phone number");
                 mTemp = scan.nextLine();
                 newValue = validatePhonenumber(mTemp);
                 editbyComponent(editBy, 2, newValue, uuid);
+                break;
             }
             case "3": {
                 System.out.println("Enter a new email");
                 mTemp = scan.nextLine();
                 newValue = validateEmail(mTemp);
                 editbyComponent(editBy, 3, newValue, uuid);
+                break;
             }
         }
     }
@@ -307,13 +318,14 @@ public class Directory {
 //                String uuid = mEmail_UUID.get(uuid);
                 String data[] = mUUID_Data.get(uuid).split("&/&");
                 save(componentToEdit, newValue, data,uuid);
-            }
+            }break;
             case 2: {
 //                String uuid = mName_UUID.get(uuid);
-                System.out.println(uuid);
-                System.out.println(mUUID_Data.get(uuid).split("&/&"));
+//                System.out.println(uuid);
+//                System.out.println(mUUID_Data.get(uuid).split("&/&"));
                 String data[] = mUUID_Data.get(uuid).split("&/&");
                 save(componentToEdit, newValue, data,uuid);
+                break;
             }
         }
     }
@@ -324,17 +336,20 @@ public class Directory {
                 mName_UUID.remove(data[0]);
                 mName_UUID.put(newValue, uuid);
                 mUUID_Data.put(uuid, newValue + "&/&" + data[1] + "&/&" + data[2]);
+                break;
             }
             case 2: {
-                mUUID_Data.put(uuid, data[0] + "&/&" + newValue + "&/&" + data[2]);
+                mUUID_Data.put(uuid, data[0] + "&/&" + newValue + "&/&" + data[2] +"&/&");
+                System.out.println(data[0] + "&/&" + newValue + "&/&" + data[2]);
+                mUUID_Data.get(uuid);
+                break;
             }
             case 3: {
                 mEmail_UUID.remove(data[2]);
                 mEmail_UUID.put(newValue, uuid);
                 mUUID_Data.put(uuid, data[0] + "&/&" + data[1] + "&/&" + newValue);
+                break;
             }
         }
     }
-
-
 }
