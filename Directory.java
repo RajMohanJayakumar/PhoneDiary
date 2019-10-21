@@ -8,6 +8,8 @@ public class Directory {
     HashMap<String, String> mEmail_UUID = new HashMap<>(); ///  keep this as string
     HashMap<String, String> mUUID_Data = new HashMap<>();
 
+    TreeSet<String> mOrdered = new TreeSet<>();
+
 //    UUID uuid = UUID.randomUUID();
 
 //    public void addInEmailDB(String email, String id){
@@ -90,6 +92,8 @@ public class Directory {
         mEmail_UUID.put(value.getmEmail(), value.getUuid());
 
         mUUID_Data.put(value.getUuid(), mTemp);
+
+        mOrdered.add(value.getmName());
     }
 
     public void search() {
@@ -106,8 +110,8 @@ public class Directory {
                 mTemp = scan1.nextLine();
                 mTemp = mTemp.substring(0, 1).toUpperCase() + mTemp.substring(1);
                 if (mName_UUID.containsKey(mTemp)) {
-                    show(mName_UUID.get(mTemp));
                     count = 1;
+                    show(mName_UUID.get(mTemp));
                     break;
                 }
                 System.out.println("Record Not Found.. Try Again..");
@@ -120,8 +124,8 @@ public class Directory {
                 mTemp = scan1.nextLine();
 //                mTemp = mTemp.substring(0,1).toUpperCase()+mTemp.substring(1);
                 if (mEmail_UUID.containsKey(mTemp)) {
-                    show(mEmail_UUID.get(mTemp));
                     count = 1;
+                    show(mEmail_UUID.get(mTemp));
                     break;
                 }
                 System.out.println("Record Not Found.. Try Again..");
@@ -142,25 +146,49 @@ public class Directory {
         System.out.println("- Press anyother key to return to phonebook -");
 
         switch (scan.nextInt()) {
-            case 1: {
+
+            case 1:{
                 Scanner scan1 = new Scanner(System.in);
-                System.out.println("Enter the email to fetch the record..");
+                System.out.println("Enter the name to remove the record..");
+                mTemp = scan1.nextLine();
+                mTemp = mTemp.substring(0,1).toUpperCase()+mTemp.substring(1);
+                if (mName_UUID.containsKey(mTemp)) {
+                    mTemp1 = mUUID_Data.get(mName_UUID.get(mTemp)).split("&/&");
+                    mName_UUID.remove(mTemp1[0]);
+                    mUUID_Data.remove(mName_UUID.get(mTemp));
+                    mEmail_UUID.remove(mTemp1[2]);
+                    mOrdered.remove(mTemp1[0]);
+                    System.out.println("Record Removed...");
+                }
+                else{
+                    System.out.println("Record not found..");
+                }
+                break;
+            }
+            case 2: {
+                Scanner scan1 = new Scanner(System.in);
+                System.out.println("Enter the email to remove the record..");
                 mTemp = scan1.nextLine();
                 if (mEmail_UUID.containsKey(mTemp)) {
-                    mTemp1 = mUUID_Data.get(mTemp).split("&/&");
-
-                    System.out.println("Enter the Email Address");
-
-                    mTemp = mTemp1[0] + "&/&" + mTemp1[1] + "&/&" + mTemp1[2];
+                    mTemp1 = mUUID_Data.get(mEmail_UUID.get(mTemp)).split("&/&");
+                    mName_UUID.remove(mTemp1[0]);
+                    mUUID_Data.remove(mEmail_UUID.get(mTemp));
+                    mEmail_UUID.remove(mTemp1[2]);
+                    mOrdered.remove(mTemp1[0]);
+                    System.out.println("Record Removed...");
                 }
+                else{
+                    System.out.println("Record not found..");
+                }
+                break;
             }
         }
     }
 
     public void showAll(){
         count = 1;
-        for(String iterations : mUUID_Data.keySet()){
-            show(iterations);
+        for(String i : mOrdered){
+            show(mName_UUID.get(i));
             count++;
         }
     }
@@ -336,6 +364,8 @@ public class Directory {
                 mName_UUID.remove(data[0]);
                 mName_UUID.put(newValue, uuid);
                 mUUID_Data.put(uuid, newValue + "&/&" + data[1] + "&/&" + data[2]);
+                mOrdered.remove(data[0]);
+                mOrdered.remove(newValue);
                 break;
             }
             case 2: {
