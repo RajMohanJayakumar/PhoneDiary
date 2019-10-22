@@ -5,9 +5,9 @@ public class Directory {
     Contact contactData;
 
     //Creating HashMap for Name-UUID record
-    HashMap<String, String> mName_UUID = new HashMap<>();/// keep this as string
+    HashMap<String, String> mName_UUID = new HashMap<>();
     //Creating HashMap for Email-UUID record
-    HashMap<String, String> mEmail_UUID = new HashMap<>(); ///  keep this as string
+    HashMap<String, String> mEmail_UUID = new HashMap<>();
     //Creating HashMap for UUID-ContactData record
     HashMap<String, Contact> mUUID_Data = new HashMap<>();
 
@@ -336,8 +336,8 @@ public class Directory {
             System.out.println("--------------------------");
             System.out.print("No.");
             System.out.format("%6s", " ");
-            System.out.format("%-20s", "Name");
-            System.out.format("%-20s", "Phone Number");
+            System.out.format("%-23s", "Name");
+            System.out.format("%-23s", "Phone Number");
             System.out.format("%-20s", "Email");
             System.out.println();
         }
@@ -346,8 +346,8 @@ public class Directory {
         contactData = mUUID_Data.get(id);
         System.out.print(mCount);
         System.out.format("%6s", " ");
-        System.out.format("%-20s", contactData.getmName());
-        System.out.format("%-20s", contactData.getmPhonenumber());
+        System.out.format("%-23s", contactData.getmName());
+        System.out.format("%-23s", contactData.getmPhonenumber());
         System.out.format("%-20s", contactData.getmEmail());
         System.out.println();
     }
@@ -379,11 +379,13 @@ public class Directory {
             mTemp = mTemp.substring(0, 1).toUpperCase() + mTemp.substring(1);
             if (mTemp == null || mTemp.isEmpty()) {
                 System.out.println("No Entries found");
-            } else if (mName_UUID.containsKey(mTemp)) {
+            } else if (mTemp.length()>20){
+                System.out.println("Enter a name within the size of 20 Characters..");
+            }else if (mName_UUID.containsKey(mTemp)) {
                 System.out.println("Name already Exists..");
             } else
                 return mTemp;
-            System.out.println("Please enter a new name.. Enter a new name");
+            System.out.println("Please enter a new name..");
             //Getting another input when there previous value is not accepted
             mTemp = scan1.nextLine();
         }
@@ -397,6 +399,12 @@ public class Directory {
                 //Checking whether all the entries has only numeric values or '+' sign
                 if (!('0' <= mTemp.charAt(i) && mTemp.charAt(i) <= '9') || mTemp.charAt(i) == '+') {
                     System.out.println("Enter a Valid Phone Number");
+                    mTemp = scan.nextLine().trim();
+                    continue invalid;
+                }
+                //Checking whether the size of phone number is between 5 and 20
+                if (mTemp.length()>20 || mTemp.length()<5) {
+                    System.out.println("Enter a Valid Phone Number between the size of 5 and 20 characters");
                     mTemp = scan.nextLine().trim();
                     continue invalid;
                 }
