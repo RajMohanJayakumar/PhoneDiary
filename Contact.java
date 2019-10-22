@@ -4,6 +4,16 @@ public class Contact {
     private String mPhonenumber;
     private String uuid;
 
+    public Contact(){
+
+    }
+
+    public Contact(String mName, String mPhonenumber, String mEmail) {
+        this.mName = mName;
+        this.mEmail = mEmail;
+        this.mPhonenumber = mPhonenumber;
+    }
+
     public String getUuid() {
         return uuid;
     }
