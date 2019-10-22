@@ -4,15 +4,19 @@ public class Contact {
     private String mPhonenumber;
     private String uuid;
 
-    public Contact(){
+    //Default constructor
+    public Contact() {
 
     }
 
+    //Parameterized constructor for creating objects with values
     public Contact(String mName, String mPhonenumber, String mEmail) {
         this.mName = mName;
         this.mEmail = mEmail;
         this.mPhonenumber = mPhonenumber;
     }
+
+    //Getters and Setters for the private Class Variables
 
     public String getUuid() {
         return uuid;

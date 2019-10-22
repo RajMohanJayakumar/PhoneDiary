@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 public class Controller implements Serializable {
 
+    //Creating instance for Directory Class
     Directory directory = new Directory();
     Scanner scan = new Scanner(System.in);
 
