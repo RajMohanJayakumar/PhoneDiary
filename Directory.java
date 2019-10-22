@@ -16,7 +16,7 @@ public class Directory {
 
 
     //Creating common Class variables to use inside the methods
-    String mName,mPhone,mEmail,mUuid,mTemp;
+    String mName, mPhone, mEmail, mUuid, mTemp;
 
     //Global counter used by different methods to provide series of numbers to the show method
     int mCount = 1;
@@ -190,6 +190,7 @@ public class Directory {
             System.out.println("--------------------------");
             System.out.println("Phone Directory is Empty..");
         }
+        //Iterating names one by one in sorted order using foreach loop
         for (String iterator : mOrdered) {
             show(mName_UUID.get(iterator));
             mCount++;
@@ -330,7 +331,8 @@ public class Directory {
         }
     }
 
-    public void show(String id) {
+    //To Show records from UUID-Data using uuid as a parameter
+    public void show(String uuid) {
         //Printing the Headers when counter value equals to 1
         if (mCount == 1) {
             System.out.println("--------------------------");
@@ -342,8 +344,8 @@ public class Directory {
             System.out.println();
         }
 
-        //Printing Values corresponding to the UUID
-        contactData = mUUID_Data.get(id);
+        //Getting Values corresponding to the UUID and storing it in contactData
+        contactData = mUUID_Data.get(uuid);
         System.out.print(mCount);
         System.out.format("%6s", " ");
         System.out.format("%-23s", contactData.getmName());
@@ -379,9 +381,9 @@ public class Directory {
             mTemp = mTemp.substring(0, 1).toUpperCase() + mTemp.substring(1);
             if (mTemp == null || mTemp.isEmpty()) {
                 System.out.println("No Entries found");
-            } else if (mTemp.length()>20){
+            } else if (mTemp.length() > 20) {
                 System.out.println("Enter a name within the size of 20 Characters..");
-            }else if (mName_UUID.containsKey(mTemp)) {
+            } else if (mName_UUID.containsKey(mTemp)) {
                 System.out.println("Name already Exists..");
             } else
                 return mTemp;
@@ -395,16 +397,15 @@ public class Directory {
         Scanner scan = new Scanner(System.in);
         invalid:
         while (true) {
+            //Checking whether the size of phone number is between 5 and 20
+            if (mTemp.length() > 20 || mTemp.length() < 5) {
+                System.out.println("Enter a Valid Phone Number between the size of 5 and 20 characters");
+                mTemp = scan.nextLine().trim();
+            }
             for (int i = 0; i < mTemp.length(); i++) {
                 //Checking whether all the entries has only numeric values or '+' sign
                 if (!('0' <= mTemp.charAt(i) && mTemp.charAt(i) <= '9') || mTemp.charAt(i) == '+') {
                     System.out.println("Enter a Valid Phone Number");
-                    mTemp = scan.nextLine().trim();
-                    continue invalid;
-                }
-                //Checking whether the size of phone number is between 5 and 20
-                if (mTemp.length()>20 || mTemp.length()<5) {
-                    System.out.println("Enter a Valid Phone Number between the size of 5 and 20 characters");
                     mTemp = scan.nextLine().trim();
                     continue invalid;
                 }
