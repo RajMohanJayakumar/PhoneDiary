@@ -285,7 +285,7 @@ public class Directory {
         }
     }
 
-    //Edit the
+    //Getting the contact details and editing it with respect to the fields
     public void editWithContactData(Contact contactData, String mUuid) {
 
         Scanner scan = new Scanner(System.in);
@@ -315,6 +315,7 @@ public class Directory {
 
                 //Editing other components in the contact using recursion
                 editWithContactData(contactData, mUuid);
+
                 break;
             }
             case "2": {
@@ -334,6 +335,7 @@ public class Directory {
 
                 //Editing other components in the contact using recursion
                 editWithContactData(contactData, mUuid);
+
                 break;
 
             }
@@ -352,6 +354,7 @@ public class Directory {
 
                 //Editing other components in the contact using recursion
                 editWithContactData(contactData, mUuid);
+
                 break;
             }
             default:
