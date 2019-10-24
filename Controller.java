@@ -1,7 +1,7 @@
 import java.io.Serializable;
 import java.util.Scanner;
 
-public class Controller implements Serializable {
+public class Controller {
 
     //Creating instance for Directory Class
     Directory directory = new Directory();
