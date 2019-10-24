@@ -30,15 +30,15 @@ public class Directory {
 
         //Getting Name with input validations
         System.out.println("Enter the Name:");
-        mName = validateName(scan.nextLine());
+        mName = this.validateName(scan.nextLine());
 
         // Getting Phone number with input validations
         System.out.println("Enter the Phone Number");
-        mPhone = validatePhonenumber(scan.next());
+        mPhone = this.validatePhonenumber(scan.next());
 
         // Getting Email value with input validations
         System.out.println("Enter the Email Address");
-        mEmail = validateEmail(scan.next());
+        mEmail = this.validateEmail(scan.next());
 
         //Generating random UUID
         mUuid = UUID.randomUUID().toString();
@@ -81,7 +81,7 @@ public class Directory {
                 //Checking whether the name exists in Name-UUID HashMap
                 if (mName_UUID.containsKey(mName)) {
                     mCount = 1;
-                    show(mName_UUID.get(mName));
+                    this.show(mName_UUID.get(mName));
                     break;
                 }
 
@@ -102,7 +102,7 @@ public class Directory {
                 //Checking whether the email exists in Email-UUID HashMap
                 if (mEmail_UUID.containsKey(mEmail)) {
                     mCount = 1;
-                    show(mEmail_UUID.get(mEmail));
+                    this.show(mEmail_UUID.get(mEmail));
                     break;
                 }
 
@@ -219,7 +219,7 @@ public class Directory {
 
         //Iterating names one by one in sorted order using foreach loop
         for (String iterator : mOrdered) {
-            show(mName_UUID.get(iterator));
+            this.show(mName_UUID.get(iterator));
             mCount++;
         }
 
@@ -252,7 +252,7 @@ public class Directory {
                     contactData = mUUID_Data.get(mName_UUID.get(mName));
 
                     //Editing the fetched records using editWithContactData() method
-                    editWithContactData(contactData, mName_UUID.get(mName));
+                    this.editWithContactData(contactData, mName_UUID.get(mName));
 
                 } else {
 
@@ -272,7 +272,7 @@ public class Directory {
                     contactData = mUUID_Data.get(mEmail_UUID.get(mEmail));
 
                     //Editing the fetched records using editWithContactData() method
-                    editWithContactData(contactData, mEmail_UUID.get(mEmail));
+                    this.editWithContactData(contactData, mEmail_UUID.get(mEmail));
 
                 } else {
 
@@ -295,46 +295,45 @@ public class Directory {
         System.out.println("3.Edit Email");
         System.out.println("- press anyother key to exit -");
 
-        String newValue;
         switch (scan.nextLine()) {
             case "1": {
 
                 System.out.println("Enter a new name:");
-                mTemp = scan.nextLine();
+                mName = scan.nextLine();
 
                 //Changing first letter as uppercase if not typed in uppercase
-                mTemp = mTemp.substring(0, 1).toUpperCase() + mTemp.substring(1);
+                mName = mName.substring(0, 1).toUpperCase() + mName.substring(1);
 
                 //Validating the new name input
-                newValue = validateName(mTemp);
+                mName = validateName(mName);
 
                 //Saving the new value using save() method
-                saveAfterEdit(1, contactData, newValue, mUuid);
+                this.saveAfterEdit(1, contactData, mName, mUuid);
                 contactData = mUUID_Data.get(mUuid);
                 System.out.println("Editing other components..");
 
                 //Editing other components in the contact using recursion
-                editWithContactData(contactData, mUuid);
+                this.editWithContactData(contactData, mUuid);
 
                 break;
             }
             case "2": {
 
                 System.out.println("Enter a new phone number");
-                mTemp = scan.nextLine();
+                mPhone = scan.nextLine();
 
                 //Validating the new phone number input
-                newValue = validatePhonenumber(mTemp);
+                mPhone = validatePhonenumber(mPhone);
 
                 //Saving the new value using save() method
-                saveAfterEdit(2, contactData, newValue, mUuid);
+                this.saveAfterEdit(2, contactData, mPhone, mUuid);
 
                 //Reassigning the variable "contactData" for the next iteration to edit
                 contactData = mUUID_Data.get(mUuid);
                 System.out.println("Editing other components..");
 
                 //Editing other components in the contact using recursion
-                editWithContactData(contactData, mUuid);
+                this.editWithContactData(contactData, mUuid);
 
                 break;
 
@@ -342,18 +341,18 @@ public class Directory {
             case "3": {
 
                 System.out.println("Enter a new email");
-                mTemp = scan.nextLine();
+                mEmail = scan.nextLine();
 
                 //Validating the new email input
-                newValue = validateEmail(mTemp);
+                mEmail = validateEmail(mEmail);
 
                 //Saving the new value using save() method
-                saveAfterEdit(3, contactData, newValue, mUuid);
+                this.saveAfterEdit(3, contactData, mEmail, mUuid);
                 contactData = mUUID_Data.get(mUuid);
                 System.out.println("Editing other components..");
 
                 //Editing other components in the contact using recursion
-                editWithContactData(contactData, mUuid);
+                this.editWithContactData(contactData, mUuid);
 
                 break;
             }
@@ -461,6 +460,7 @@ public class Directory {
     }
 
     public String validateName(String mTemp) {
+
         while (true) {
             Scanner scan1 = new Scanner(System.in);
 
@@ -488,6 +488,8 @@ public class Directory {
 
     public String validatePhonenumber(String mTemp) {
         Scanner scan = new Scanner(System.in);
+
+        //Creating Label to check the new input when the previous input doesn't meet the criteria
         invalid:
         while (true) {
 
